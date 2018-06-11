@@ -67,19 +67,18 @@ def VectorAsLine(fits):
 #main
 fits = []
 
-for cSpecies in range(0,101,25):  #iterations
+for cSpecies in range(1):  #iterations
 
     fits.append([])
     
-    parent = MatrixRandomize(MatrixCreate(1,cSpecies))  #binary mode = 1
-    pFitness = Fitness(parent)
-    print 0,pFitness 
+    parent = MatrixRandomize(MatrixCreate(1,50))  #binary mode = 1
+    pFitness = Fitness(parent) 
 
-    for currentGen in range(100):
+    for currentGen in range(2500):
 
         fits[cSpecies/25].append(pFitness)
         
-        print currentGen, pFitness
+        #print currentGen, pFitness
     
         child = MatrixPerturb(parent,0.05)  ## prob, mode ##binary mode = 1
         cFitness = Fitness(child)
