@@ -64,32 +64,40 @@ def VectorAsLine(fits):
     for species in fits:
         plt.plot(species)
 
+"""
 #main
 fits = []
+Genes = MatrixCreate(50,5000)  ###
 
 for cSpecies in range(1):  #iterations
 
     fits.append([])
     
-    parent = MatrixRandomize(MatrixCreate(1,50))  #binary mode = 1
+    parent = MatrixRandomize(MatrixCreate(1,50 ))  #binary mode = 1
     pFitness = Fitness(parent) 
 
-    for currentGen in range(2500):
+    for currentGen in range(5000):
 
-        fits[cSpecies/25].append(pFitness)
+        fits[cSpecies].append(pFitness)
         
         #print currentGen, pFitness
     
-        child = MatrixPerturb(parent,0.05)  ## prob, mode ##binary mode = 1
+        child = MatrixPerturb(parent,0.25)  ## prob, mode ##binary mode = 1
         cFitness = Fitness(child)
-
+#Genes 
+        for row in range(len(child)):
+            for column in range(len(child[row])):
+                Genes[column][currentGen] = child[row][column]
+#Reproduction
         if cFitness > pFitness:
             parent = child
             pFitness = cFitness
 
-VectorAsLine(fits)
-plt.show()
 
+#Graph                
+#VectorAsLine(fits)
+#plt.imshow(Genes, cmap=plt.cm.gray, aspect='auto',interpolation = "nearest")
+plt.show()
 
 
 
