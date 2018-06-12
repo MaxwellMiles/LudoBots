@@ -1,8 +1,11 @@
-#HillClimber
+#Artificial Neural Network
 
 import random
 import copy
 import matplotlib.pyplot as plt
+from math import *
+
+"""==================Matrix Actions======================="""
 
 #Create Matrix
 def MatrixCreate(row,column):
@@ -60,44 +63,45 @@ def MPrint(v):
         print row
     return
 
+"""=================Hill Climber===================="""
+
 #Plot Graph
 def VectorAsLine(fits):
     for species in fits:
         plt.plot(species)
 
-"""
-#main
-fits = []
-Genes = MatrixCreate(50,5000)  ###
 
-for cSpecies in range(1):  #iterations
+"""=================Neural Network============"""
 
-    fits.append([])
+#Neuron Position Plotter
+def NeuronPosition(NV):
+    totalNeurons = len(NV[0])
+    M = MatrixCreate(2,totalNeurons)
     
-    parent = MatrixRandomize(MatrixCreate(1,50 ))  #binary mode = 1
-    pFitness = Fitness(parent) 
+    for neuralPoint in range(totalNeurons):
+        x = cos(2*pi/totalNeurons*neuralPoint)
+        y = sin(2*pi/totalNeurons*neuralPoint)
 
-    for currentGen in range(5000):
+        M[0][neuralPoint] = x
+        M[1][neuralPoint] = y
 
-        fits[cSpecies].append(pFitness)
-        
-        #print currentGen, pFitness
-    
-        child = MatrixPerturb(parent,0.25)  ## prob, mode ##binary mode = 1
-        cFitness = Fitness(child)
-#Genes 
-        for row in range(len(child)):
-            for column in range(len(child[row])):
-                Genes[column][currentGen] = child[row][column]
-#Reproduction
-        if cFitness > pFitness:
-            parent = child
-            pFitness = cFitness
+    return M
 
+def SynapticConnections(NP):
+    for strt in range(len(NP[0])-1):
+        for stp in range(strt+1,len(NP[0])):
+            plt.plot([NP[0][strt],NP[0][stp]],[NP[1][strt],NP[1][stp]])    
 
-#Graph                
-#VectorAsLine(fits)
-#plt.imshow(Genes, cmap=plt.cm.gray, aspect='auto',interpolation = "nearest")
+def CircularPoint(NP):
+    plt.plot(NP[0],NP[1], 'ko', markerfacecolor = [1,1,1], markersize = 18 )
+            
+"""=============Main====================="""
+
+NeuronValues = MatrixRandomize(MatrixCreate(50,10),0,1)
+NP = NeuronPosition(NeuronValues)
+
+CircularPoint(NP)
+SynapticConnections(NP)
 plt.show()
 
 
@@ -114,3 +118,47 @@ plt.show()
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
