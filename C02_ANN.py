@@ -23,6 +23,8 @@ def MatrixRandomize(v,mode=0,sec = 0):
                 v[row][column] = random.random()
             if mode == 1:
                 v[row][column] = random.randint(0,1)
+            if mode == -1:
+                v[row][column] = random.uniform(1,-1)
                 
         if sec != 0:
             break
@@ -87,23 +89,53 @@ def NeuronPosition(NV):
 
     return M
 
-def SynapticConnections(NP):
+def SynapticConnections(NP,syn):
     for strt in range(len(NP[0])-1):
         for stp in range(strt+1,len(NP[0])):
-            plt.plot([NP[0][strt],NP[0][stp]],[NP[1][strt],NP[1][stp]])    
 
+            #Synaptic Width
+            lineWidth = int(10*abs(syn[strt][stp]))+1
+
+            #Line Colour
+            if syn[strt][stp]<0:
+                lineColor = [0.8,0.8,0.8]
+            if syn[strt][stp]>=0:
+                lineColor = [0.0,0.0,0.0]
+                
+            plt.plot([NP[0][strt],NP[0][stp]],[NP[1][strt],NP[1][stp]],color = lineColor, linewidth = lineWidth, alpha=0.5)    
+    
 def CircularPoint(NP):
     plt.plot(NP[0],NP[1], 'ko', markerfacecolor = [1,1,1], markersize = 18 )
+
+def Update(NV, Syn, i):
+    for n in range(len(NV[0])):
+        for strenght in range(len(NV[0])):            
+            NV[i][n] += Syn[n][strenght]*NV[i-1][strenght]
+                
+        if NV[i][n]<0:
+            NV[i][n] = 0
+        if NV[i][n] > 1:
+            NV[i][n] = 1
             
+    return NV
+    
 """=============Main====================="""
 
 NeuronValues = MatrixRandomize(MatrixCreate(50,10),0,1)
 NP = NeuronPosition(NeuronValues)
 
-CircularPoint(NP)
-SynapticConnections(NP)
-plt.show()
+Synapses = MatrixRandomize(MatrixCreate(10,10),-1)
+#CircularPoint(NP)
+#SynapticConnections(NP, Synapses)
+#plt.show()
 
+for i in range(1,50):    
+    NeuronValues = Update(NeuronValues, Synapses, i)
+
+    
+plt.imshow(NeuronValues, cmap=plt.cm.gray, interpolation = "nearest", aspect="auto")
+plt.show()
+    
 
 
 
